@@ -8,6 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 alembic = "^1.13.2"
+pydantic = "^2.9.2"
+fastapi = "^0.115.0"
+uvicorn = "^0.30.6"
+gunicorn = "^23.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -77,9 +81,7 @@ select = [
     "ERA",   # eradicate"                                      https://docs.astral.sh/ruff/rules/#eradicate-era
     "PL",    # Pylint                                          https://docs.astral.sh/ruff/rules/#pylint-pl
     "TRY",   # tryceratops                                     https://docs.astral.sh/ruff/rules/#tryceratops-try
-    "FAST",  # FastAPI                                         https://docs.astral.sh/ruff/rules/#fastapi-fast
     "FURB",  # refurb                                          https://docs.astral.sh/ruff/rules/#refurb-furb
-    "DOC",   # pydoclint                                       https://docs.astral.sh/ruff/rules/#pydoclint-doc
 ]
 
 ignore = [
@@ -123,6 +125,10 @@ exclude = [
 ]
 
 preview = true
+extend-select = [
+    "FAST",  # FastAPI                                         https://docs.astral.sh/ruff/rules/#fastapi-fast
+    "DOC",   # pydoclint                                       https://docs.astral.sh/ruff/rules/#pydoclint-doc
+]
   
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = [
