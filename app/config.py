@@ -8,6 +8,7 @@ from pydantic_settings.main import BaseSettings, SettingsConfigDict
 type PublicKeyPath = FilePath
 type PrivateKeyPath = FilePath
 type Certificate = str
+type AlgorithmName = str
 
 BASE_DIR = Path(__file__).parent.parent
 
@@ -15,6 +16,7 @@ BASE_DIR = Path(__file__).parent.parent
 class CryptoModel(BaseModel):
     public_key: PublicKeyPath
     private_key: PrivateKeyPath
+    algorithm: AlgorithmName = "RS256"
 
     @field_validator("public_key", "private_key", mode="after")
     @classmethod
