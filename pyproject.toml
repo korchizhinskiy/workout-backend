@@ -12,6 +12,9 @@ pydantic = "^2.9.2"
 fastapi = "^0.115.0"
 uvicorn = "^0.30.6"
 gunicorn = "^23.0.0"
+pyjwt = "^2.9.0"
+cryptography = "^43.0.1"
+pydantic-settings = "^2.5.2"
 
 
 [tool.poetry.group.dev.dependencies]
