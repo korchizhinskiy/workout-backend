@@ -1,4 +1,4 @@
-from pathlib import PosixPath
+from pathlib import Path, PosixPath
 
 from pydantic.functional_validators import field_validator
 from pydantic.main import BaseModel
@@ -9,15 +9,17 @@ type PublicKeyPath = FilePath
 type PrivateKeyPath = FilePath
 type Certificate = str
 
+BASE_DIR = Path(__file__).parent.parent
+
 
 class CryptoModel(BaseModel):
     public_key: PublicKeyPath
     private_key: PrivateKeyPath
 
-    @field_validator("public_key", "private_key")
+    @field_validator("public_key", "private_key", mode="after")
     @classmethod
-    def load_public_key(cls, value: PosixPath) -> Certificate:
-        return value.read_text().strip()
+    def load_file_content(cls, value: PosixPath) -> Certificate:
+        return Path(BASE_DIR / value).read_text(encoding="utf-8").strip()
 
 
 class Settings(BaseSettings):
