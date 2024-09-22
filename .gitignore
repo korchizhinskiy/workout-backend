@@ -134,5 +134,7 @@ cython_debug/
 rabbitmq/
 rabbitmq_data/
 
+# Certificates
+certs/
 
 
