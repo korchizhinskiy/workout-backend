@@ -11,17 +11,18 @@ from app.config import Settings
 
 
 class DishkaProvider(Provider):
+    def __init__(self, config: Settings) -> None:
+        super().__init__()
+        self.config = config
+
     @provide(scope=Scope.APP)
-    @classmethod
-    async def get_settings(cls) -> Settings:
-        # Incompatible with pyright - in issue recomend change pyright to mypy
-        # Issue: https://github.com/pydantic/pydantic-settings/issues/383
-        return Settings()  # type: ignore [reportCallIssue]
-
-
-provider = DishkaProvider()
+    async def get_settings(self) -> Settings:
+        return self.config
 
 
 def init_di(app: FastAPI) -> None:
-    container = make_async_container(DishkaProvider())
+    # Incompatible with pyright - in issue recomend change pyright to mypy
+    # Issue: https://github.com/pydantic/pydantic-settings/issues/383
+    config = Settings()  # type: ignore [reportCallIssue]
+    container = make_async_container(DishkaProvider(config))
     setup_dishka(container, app)
