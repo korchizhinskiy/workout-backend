@@ -1,8 +1,9 @@
 .dockerignore
 .env
-.certs
+certs
 .venv
 .ruff_cache
 .git
 .gitignore
-.postgres_data
+postgres_data
+docker-compose.yaml
