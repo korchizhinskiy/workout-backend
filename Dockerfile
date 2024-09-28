@@ -60,6 +60,4 @@ COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $VIRTUAL_ENV $VIRTUAL_ENV
 
 WORKDIR /opt
-COPY poetry.lock pyproject.toml ./
-COPY app/ app/
-COPY script/ script/
+COPY ./ opt/
