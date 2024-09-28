@@ -1,0 +1,27 @@
+services:
+  backend:
+    container_name: work-auth-backend
+    image: work-auth-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./certs:/opt/certs
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    entrypoint: bash ./script/entrypoint.sh backend
+    
+  database:
+    container_name: workout-auth-database
+    image: postgres:16.4-bookworm
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
