@@ -12,8 +12,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio.engine import AsyncEngine, create_async_engine
 from sqlalchemy.ext.asyncio.session import async_sessionmaker
 
-from app.config import Settings
-from app.database import get_connection_url
+from app.infrastructure.config import Settings
+from app.infrastructure.database import get_connection_url
 
 
 class DishkaProvider(Provider):

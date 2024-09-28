@@ -1,4 +1,4 @@
-from app.config import Settings
+from app.infrastructure.config import Settings
 
 type DBConnectionURL = str
 

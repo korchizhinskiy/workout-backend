@@ -9,7 +9,7 @@ type PrivateKeyPath = str
 type Certificate = str
 type AlgorithmName = str
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(__file__).parent.parent.parent
 
 
 class DatabaseConnection(BaseModel):

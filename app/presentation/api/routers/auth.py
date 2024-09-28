@@ -7,7 +7,7 @@ from fastapi.routing import APIRouter
 from jwt.exceptions import DecodeError, InvalidSignatureError
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from app.config import Settings
+from app.infrastructure.config import Settings
 
 router = APIRouter(prefix="/auth")
 

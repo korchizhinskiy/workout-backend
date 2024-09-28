@@ -4,8 +4,8 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from app.config import Settings
-from app.database import get_connection_url
-from app.models import Base
+from app.infrastructure.database import get_connection_url
+from app.infrastructure.models import Base
 
 config = context.config
 settings = Settings()  # type: ignore [reportCallIssue]

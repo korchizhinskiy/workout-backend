@@ -1,7 +1,7 @@
 from fastapi.applications import FastAPI
 
-from app.dependencies import init_di
-from app.routers.auth import router as auth_router
+from app.infrastructure.dependencies import init_di
+from app.presentation.api.routers.auth import router as auth_router
 
 app = FastAPI()
 
