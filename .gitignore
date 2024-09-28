@@ -137,4 +137,7 @@ rabbitmq_data/
 # Certificates
 certs/
 
+# Database Volumes
+postgres_data/
+
 
