@@ -5,7 +5,6 @@ from dishka.integrations.fastapi import FromDishka, inject
 from fastapi import HTTPException, status
 from fastapi.routing import APIRouter
 from jwt.exceptions import DecodeError, InvalidSignatureError
-from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from app.infrastructure.config import Settings
 
@@ -14,7 +13,7 @@ router = APIRouter(prefix="/auth")
 
 @router.post("/registration")
 @inject
-async def registration(settings: FromDishka[Settings], session: FromDishka[AsyncSession]) -> str:
+async def registration(settings: FromDishka[Settings]) -> str:
     payload = {
         "user_id": 123,
         "expires": time.time() + 100,
