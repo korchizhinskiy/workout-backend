@@ -1,22 +1,16 @@
 from collections.abc import AsyncGenerator
 
-from dishka import (
-    Provider,
-    Scope,
-    make_async_container,
-    provide,  # type: ignore [reportUnknownVariableType]
-)
-from dishka.integrations.fastapi import setup_dishka
-from fastapi.applications import FastAPI
-from sqlalchemy.ext.asyncio import AsyncSession
+from dishka.dependency_source.make_factory import provide  # type: ignore [reportUnknownVariableType]
+from dishka.entities.scope import Scope
+from dishka.provider import Provider
 from sqlalchemy.ext.asyncio.engine import AsyncEngine, create_async_engine
-from sqlalchemy.ext.asyncio.session import async_sessionmaker
+from sqlalchemy.ext.asyncio.session import AsyncSession, async_sessionmaker
 
 from app.infrastructure.config import Settings
 from app.infrastructure.database import get_connection_url
 
 
-class DishkaProvider(Provider):
+class SQLAlchemyProvider(Provider):
     def __init__(self, config: Settings) -> None:
         super().__init__()
         self.config = config
@@ -43,11 +37,3 @@ class DishkaProvider(Provider):
         )
         async with async_session() as session:
             yield session
-
-
-def init_di(app: FastAPI) -> None:
-    # Incompatible with pyright - in issue recomend change pyright to mypy
-    # Issue: https://github.com/pydantic/pydantic-settings/issues/383
-    config = Settings()  # type: ignore [reportCallIssue]
-    container = make_async_container(DishkaProvider(config))
-    setup_dishka(container, app)
