@@ -11,17 +11,9 @@ from app.infrastructure.database import get_connection_url
 
 
 class SQLAlchemyProvider(Provider):
-    def __init__(self, config: Settings) -> None:
-        super().__init__()
-        self.config = config
-
-    @provide(scope=Scope.APP)
-    async def get_settings(self) -> Settings:
-        return self.config
-
     @classmethod
     @provide(scope=Scope.APP)
-    async def engine(cls, settings: Settings) -> AsyncEngine:
+    async def get_engine(cls, settings: Settings) -> AsyncEngine:
         database_url = get_connection_url(settings)
         database_params = {}
         return create_async_engine(database_url, **database_params)
