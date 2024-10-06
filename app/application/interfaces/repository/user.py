@@ -1,6 +1,8 @@
 from typing import Protocol
 
+from app.application.dto.registration import UserRegistrationDTO
+
 
 class IUserRepository(Protocol):
-    def create(self) -> None:
+    async def create(self, user_dto: UserRegistrationDTO) -> None:
         pass
