@@ -1,43 +1,26 @@
-import time
-
-import jwt
 from dishka.integrations.fastapi import FromDishka, inject
-from fastapi import HTTPException, status
 from fastapi.routing import APIRouter
-from jwt.exceptions import DecodeError, InvalidSignatureError
 
-from app.infrastructure.config import Settings
+from app.application.dto.registration import UserRegistrationDTO
+from app.application.interactors.user_registration import UserRegistrationInteractor
+from app.presentation.schemas.registration import UserRegistrationInputSchema
 
 router = APIRouter(prefix="/auth")
 
 
 @router.post("/registration")
 @inject
-async def registration(settings: FromDishka[Settings]) -> str:
-    payload = {
-        "user_id": 123,
-        "expires": time.time() + 100,
-    }
-    token = jwt.encode(
-        payload=payload,
-        key=settings.certs.private_key,
-        algorithm=settings.certs.algorithm,
+async def registration(
+    user_data: UserRegistrationInputSchema,
+    interactor: FromDishka[UserRegistrationInteractor],
+) -> UserRegistrationInputSchema:
+    await interactor.execute(
+        UserRegistrationDTO(
+            username=user_data.username,
+            password=user_data.password,
+            first_name=user_data.first_name,
+            last_name=user_data.last_name,
+            second_name=user_data.second_name,
+        ),
     )
-    return token
-
-
-@router.post("/check")
-@inject
-async def check(token: str, settings: FromDishka[Settings]) -> str:
-    try:
-        token = jwt.decode(
-            token,
-            key=settings.certs.public_key,
-            algorithms=[settings.certs.algorithm],
-        )
-    except InvalidSignatureError as signature_error:
-        # TODO: Set custom exception.
-        raise HTTPException(detail="Invalid access token.", status_code=status.HTTP_403_FORBIDDEN) from signature_error
-    except DecodeError as decode_error:
-        raise HTTPException(detail="Token is broken.", status_code=status.HTTP_400_BAD_REQUEST) from decode_error
-    return "ds"
+    return user_data
