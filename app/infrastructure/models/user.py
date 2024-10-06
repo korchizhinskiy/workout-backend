@@ -12,4 +12,8 @@ class User(Base):
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
     username: Mapped[str] = mapped_column(unique=True)
-    password: Mapped[str]
+    password: Mapped[bytes]
+
+    first_name: Mapped[str]
+    last_name: Mapped[str]
+    second_name: Mapped[str | None]
