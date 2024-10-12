@@ -13,6 +13,8 @@ services:
     env_file:
       - .env
     entrypoint: bash ./script/entrypoint.sh backend
+    tty: true
+    stdin_open: true
     
   database:
     container_name: workout-auth-database
