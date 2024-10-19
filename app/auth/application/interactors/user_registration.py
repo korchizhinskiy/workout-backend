@@ -9,9 +9,13 @@ class UserRegistrationInteractor:
         self.repository = repository
 
     async def execute(self, user_dto: UserRegistrationDTO) -> None:
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(user_dto.password, salt)
+        hashed_password = self.hash_password(user_dto.password)
 
         await self.repository.create(
             UserRegistrationDTO(**user_dto.model_dump(exclude={"password"}), password=hashed_password),
         )
+
+    @staticmethod
+    def hash_password(password: bytes) -> bytes:
+        salt = bcrypt.gensalt()
+        return bcrypt.hashpw(password, salt)
