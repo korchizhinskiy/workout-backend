@@ -1,7 +1,7 @@
 import bcrypt
 
-from app.application.dto.registration import UserRegistrationDTO
-from app.application.interfaces.repository.user import IUserRepository
+from app.auth.application.dto.registration import UserRegistrationDTO
+from app.auth.application.interfaces.repository.user import IUserRepository
 
 
 class UserRegistrationInteractor:

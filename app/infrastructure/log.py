@@ -6,4 +6,4 @@ from logging.config import fileConfig
 def configure_logging() -> None:
     config = ConfigParser(os.environ)
     config.read(filenames="app/infrastructure/logging.ini")
-    fileConfig(config)
+    fileConfig(config, disable_existing_loggers=False)

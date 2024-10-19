@@ -3,9 +3,9 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
+from app.auth.infrastructure.models import Base as AuthBase
 from app.infrastructure.config import Settings
 from app.infrastructure.database import get_connection_url
-from app.infrastructure.models import Base
 
 config = context.config
 settings = Settings()  # type: ignore [reportCallIssue]
@@ -14,7 +14,7 @@ config.set_main_option("sqlalchemy.url", f"{get_connection_url(settings)}?async_
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = Base.metadata
+target_metadata = [AuthBase.metadata]
 
 
 def run_migrations_offline() -> None:

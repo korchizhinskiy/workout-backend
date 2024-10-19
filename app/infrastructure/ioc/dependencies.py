@@ -5,8 +5,8 @@ from fastapi.applications import FastAPI
 from app.infrastructure.config import Settings
 from app.infrastructure.ioc.providers import (
     ApplicationConfigProvider,
-    InteractorProvider,
-    RepositoryProvider,
+    AuthInteractorProvider,
+    AuthRepositoryProvider,
     SQLAlchemyProvider,
 )
 
@@ -18,7 +18,7 @@ def init_di(app: FastAPI) -> None:
     container = make_async_container(
         ApplicationConfigProvider(config),
         SQLAlchemyProvider(),
-        RepositoryProvider(),
-        InteractorProvider(),
+        AuthRepositoryProvider(),
+        AuthInteractorProvider(),
     )
     setup_dishka(container, app)
