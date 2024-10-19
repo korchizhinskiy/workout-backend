@@ -1,11 +1,11 @@
 from .application_config import ApplicationConfigProvider
+from .auth import InteractorProvider as AuthInteractorProvider
+from .auth import RepositoryProvider as AuthRepositoryProvider
 from .database import SQLAlchemyProvider
-from .interactor import InteractorProvider
-from .repository import RepositoryProvider
 
 __all__ = (
     "ApplicationConfigProvider",
-    "InteractorProvider",
-    "RepositoryProvider",
+    "AuthInteractorProvider",
+    "AuthRepositoryProvider",
     "SQLAlchemyProvider",
 )
