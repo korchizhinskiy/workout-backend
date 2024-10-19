@@ -23,9 +23,11 @@ class UserRepository:
         await self.session.commit()
 
     async def get_user_hashed_password(self, username: UserUsername) -> bytes:
-        query = select(exists().where(User.username == username))
-        exist_user = await self.session.scalar(query)
+        user_exist_query = select(exists().where(User.username == username))
+        exist_user = await self.session.scalar(user_exist_query)
+
         if not exist_user:
-            raise UserNotFoundError(f"User with username {username!r} not found in system.")
-        query = select(User.password).where(User.username == username)
-        return (await self.session.scalars(query)).one()
+            raise UserNotFoundError(username=username)
+
+        user_password_query = select(User.password).where(User.username == username)
+        return (await self.session.scalars(user_password_query)).one()
