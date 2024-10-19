@@ -3,7 +3,7 @@ from dishka.entities.scope import Scope
 from dishka.provider import Provider
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from app.infrastructure.repository.user import UserRepository
+from app.auth.infrastructure.repository.user import UserRepository
 
 
 class RepositoryProvider(Provider):
