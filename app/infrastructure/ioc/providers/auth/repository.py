@@ -1,13 +1,14 @@
 from dishka.dependency_source.make_factory import provide  # type: ignore [reportUnknownVariableType]
 from dishka.entities.scope import Scope
 from dishka.provider import Provider
-from sqlalchemy.ext.asyncio.session import AsyncSession
 
+from app.auth.application.interfaces.repository.user import IUserRepository
 from app.auth.infrastructure.repository.user import UserRepository
 
 
 class RepositoryProvider(Provider):
-    @classmethod
-    @provide(scope=Scope.REQUEST)
-    def provide_user_repository(cls, session: AsyncSession) -> UserRepository:
-        return UserRepository(session)
+    user_login_interactor = provide(
+        UserRepository,
+        provides=IUserRepository,
+        scope=Scope.REQUEST,
+    )
