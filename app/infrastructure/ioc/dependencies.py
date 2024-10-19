@@ -7,6 +7,7 @@ from app.infrastructure.ioc.providers import (
     ApplicationConfigProvider,
     AuthInteractorProvider,
     AuthRepositoryProvider,
+    AuthServiceProvider,
     SQLAlchemyProvider,
 )
 
@@ -20,5 +21,6 @@ def init_di(app: FastAPI) -> None:
         SQLAlchemyProvider(),
         AuthRepositoryProvider(),
         AuthInteractorProvider(),
+        AuthServiceProvider(),
     )
     setup_dishka(container, app)
