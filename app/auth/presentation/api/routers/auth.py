@@ -1,4 +1,5 @@
 from dishka.integrations.fastapi import FromDishka, inject
+from fastapi.responses import ORJSONResponse
 from fastapi.routing import APIRouter
 
 from app.auth.application.dto.login import UserLoginDTO
@@ -34,11 +35,11 @@ async def registration(
 async def login(
     user_data: UserLoginInputSchema,
     interactor: FromDishka[UserLoginInteractor],
-) -> UserLoginInputSchema:
-    await interactor.execute(
+) -> ORJSONResponse:
+    user_token = await interactor.execute(
         UserLoginDTO(username=user_data.username, password=user_data.password),
     )
-    return user_data
+    return ORJSONResponse({"token": user_token})
 
 
 # @router.post("/refresh")
