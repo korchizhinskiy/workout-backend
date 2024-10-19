@@ -20,6 +20,7 @@ sqlalchemy = "^2.0.35"
 asyncpg = "^0.29.0"
 uuid6 = "^2024.7.10"
 bcrypt = "^4.2.0"
+orjson = "^3.10.7"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -2,8 +2,10 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.sql import select
+from sqlalchemy.sql.expression import exists
 
 from app.auth.application.dto.registration import UserRegistrationDTO
+from app.auth.application.exceptions.user import UserNotFoundError
 from app.auth.infrastructure.models.user import User
 
 type HashPassword = bytes
@@ -21,6 +23,9 @@ class UserRepository:
         await self.session.commit()
 
     async def get_user_hashed_password(self, username: UserUsername) -> bytes:
+        query = select(exists().where(User.username == username))
+        exist_user = await self.session.scalar(query)
+        if not exist_user:
+            raise UserNotFoundError(f"User with username {username!r} not found in system.")
         query = select(User.password).where(User.username == username)
-        hashed_password = (await self.session.scalars(query)).first()
-        return hashed_password
+        return (await self.session.scalars(query)).one()
