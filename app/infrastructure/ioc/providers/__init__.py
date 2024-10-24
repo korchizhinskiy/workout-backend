@@ -9,5 +9,5 @@ __all__ = (
     "AuthInteractorProvider",
     "AuthRepositoryProvider",
     "AuthServiceProvider",
-    "SQLAlchemyProvider",
+    "SQLAlchemyProvider"
 )

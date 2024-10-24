@@ -40,12 +40,3 @@ async def login(
         UserLoginDTO(username=user_data.username, password=user_data.password),
     )
     return ORJSONResponse({"token": user_token})
-
-
-# @router.post("/refresh")
-# @inject
-# async def registration(
-#     user_data: UserLoginInputSchema,
-#     interactor: FromDishka[UserLoginInteractor],
-# ) -> UserRegistrationInputSchema:
-#     pass

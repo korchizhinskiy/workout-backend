@@ -6,7 +6,7 @@ from app.auth.application.dto.user import UserDTO
 from app.infrastructure.config import Settings
 
 
-class AuthService:
+class JWTService:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
 

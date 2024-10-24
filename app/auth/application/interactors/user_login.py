@@ -5,13 +5,13 @@ import bcrypt
 from app.auth.application.dto.login import UserLoginDTO
 from app.auth.application.exceptions.user import WrongPasswordError
 from app.auth.application.interfaces.repository.user import IUserRepository
-from app.auth.application.services.authentication import AuthService
+from app.auth.application.services.authentication import JWTService
 
 log = getLogger(__name__)
 
 
 class UserLoginInteractor:
-    def __init__(self, repository: IUserRepository, auth_service: AuthService) -> None:
+    def __init__(self, repository: IUserRepository, auth_service: JWTService) -> None:
         self.repository = repository
         self.auth_service = auth_service
 
