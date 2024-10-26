@@ -1,10 +1,14 @@
+from typing import Annotated
 from dishka.integrations.fastapi import FromDishka, inject
+from fastapi.param_functions import Depends
+from fastapi.responses import ORJSONResponse
 from fastapi.routing import APIRouter
 
 from app.auth.application.dto.login import UserLoginDTO
 from app.auth.application.dto.registration import UserRegistrationDTO
 from app.auth.application.interactors.user_login import UserLoginInteractor
 from app.auth.application.interactors.user_registration import UserRegistrationInteractor
+from app.auth.infrastructure.dependencies import authenticate
 from app.auth.presentation.schemas.login import UserLoginInputSchema
 from app.auth.presentation.schemas.registration import UserRegistrationInputSchema
 
@@ -34,17 +38,15 @@ async def registration(
 async def login(
     user_data: UserLoginInputSchema,
     interactor: FromDishka[UserLoginInteractor],
-) -> UserLoginInputSchema:
-    await interactor.execute(
+) -> ORJSONResponse:
+    user_token = await interactor.execute(
         UserLoginDTO(username=user_data.username, password=user_data.password),
     )
-    return user_data
+    return ORJSONResponse({"token": user_token})
 
-
-# @router.post("/refresh")
-# @inject
-# async def registration(
-#     user_data: UserLoginInputSchema,
-#     interactor: FromDishka[UserLoginInteractor],
-# ) -> UserRegistrationInputSchema:
-#     pass
+@router.post("/check")
+@inject
+async def login(
+    payload: Annotated[dict, Depends(authenticate)]
+) -> str:
+    return "da"

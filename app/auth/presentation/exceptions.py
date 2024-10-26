@@ -4,10 +4,11 @@ from functools import partial
 
 from fastapi import FastAPI, Response, status
 from fastapi.requests import Request
-from fastapi.responses import JSONResponse, ORJSONResponse
+from fastapi.responses import ORJSONResponse
 
 from app.auth.application.exceptions.base import ApplicationError
-from app.auth.application.exceptions.user import UserNotFoundError
+from app.auth.application.exceptions.user import UserNotFoundError, WrongPasswordError
+from app.auth.infrastructure.exceptions import InvalidAuthenticationTokenError
 
 
 @dataclass(frozen=True)
@@ -22,6 +23,8 @@ class ErrorResponse:
 
 def setup_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(UserNotFoundError, error_handler(status.HTTP_404_NOT_FOUND))
+    app.add_exception_handler(WrongPasswordError, error_handler(status.HTTP_400_BAD_REQUEST))
+    app.add_exception_handler(InvalidAuthenticationTokenError, error_handler(status.HTTP_400_BAD_REQUEST))
 
     app.add_exception_handler(ApplicationError, error_handler(status.HTTP_500_INTERNAL_SERVER_ERROR))
     app.add_exception_handler(Exception, unknown_exception_handler)
