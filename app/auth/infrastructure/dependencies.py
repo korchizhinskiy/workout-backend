@@ -22,6 +22,9 @@ async def authenticate(
             key=settings.certs.public_key,
             algorithms=[settings.certs.algorithm],
         )
+    except jwt.ExpiredSignatureError as error:
+        pass
+        # TODO: Check by session id and recookie or unlogin user
     except jwt.InvalidTokenError as error:
         raise InvalidAuthenticationTokenError from error
     else:

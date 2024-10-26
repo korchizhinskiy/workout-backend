@@ -21,4 +21,4 @@ class UserLoginInteractor:
         if not bcrypt.checkpw(user_dto.password, user.password):
             raise WrongPasswordError
         # TODO: Use Token DTO
-        return self.auth_service.create_access_token(user)
+        return await self.auth_service.create_access_token(user)
