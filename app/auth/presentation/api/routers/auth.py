@@ -46,7 +46,7 @@ async def login(
 
 @router.post("/check")
 @inject
-async def login(
+async def check(
     payload: Annotated[dict, Depends(authenticate)]
 ) -> str:
     return "da"
