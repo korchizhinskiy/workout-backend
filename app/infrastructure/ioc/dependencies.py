@@ -15,12 +15,12 @@ from app.infrastructure.ioc.providers import (
 def init_di(app: FastAPI) -> None:
     # Incompatible with pyright - in issue recomend change pyright to mypy
     # Issue: https://github.com/pydantic/pydantic-settings/issues/383
-    config = Settings()  # type: ignore [reportCallIssue]
     container = make_async_container(
-        ApplicationConfigProvider(config),
+        ApplicationConfigProvider(),
         SQLAlchemyProvider(),
         AuthRepositoryProvider(),
         AuthInteractorProvider(),
         AuthServiceProvider(),
+        context={Settings: Settings()},  # type: ignore [reportCallIssue]
     )
     setup_dishka(container, app)
