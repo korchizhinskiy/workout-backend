@@ -18,7 +18,7 @@ class JWTService:
         sid = jwt.encode(
             payload={
                 "sub": str(user_dto.id),
-                "exp": time.time() + 100,
+                "exp": time.time() + 1000,
                 "crt": time.time(),
             },
             key=self.settings.certs.private_key,
