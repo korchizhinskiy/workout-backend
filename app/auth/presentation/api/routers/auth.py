@@ -44,9 +44,8 @@ async def login(
     )
     return ORJSONResponse({"token": user_token})
 
+
 @router.post("/check")
 @inject
-async def check(
-    payload: Annotated[dict, Depends(authenticate)]
-) -> str:
+async def check(payload: Annotated[dict, Depends(authenticate)]) -> str:
     return "da"
