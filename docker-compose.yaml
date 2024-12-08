@@ -6,7 +6,9 @@ services:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./:/opt
+      - ./app:/opt/app
+      - ./script:/opt/script
+      - ./alembic.ini:/opt/alembic.ini
     user: 1000:1000
     ports:
       - 8000:8000

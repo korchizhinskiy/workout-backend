@@ -130,6 +130,9 @@ cython_debug/
 #JetBrains
 .idea/
 
+#Pyenv
+.python-version
+
 # Docker Volumes
 rabbitmq/
 rabbitmq_data/

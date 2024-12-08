@@ -1,31 +1,7 @@
 ################################
 # BASE
 ################################
-FROM python:3.12.6-slim-bookworm as python-base
-
-ENV PYTHONUNBUFFERED=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100 \
-    POETRY_VERSION=1.8.0 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_CREATE=false \
-    VIRTUAL_ENV="/venv" \
-    NODE_MAJOR=20 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-
-# Install Poetry
-ENV PATH="$POETRY_HOME/bin:$VIRTUAL_ENV/bin:$PATH"
-RUN python -m venv $VIRTUAL_ENV
-
-WORKDIR /opt
-ENV PYTHONPATH="/opt:$PYTHONPATH"
-
-################################
-# BUILD
-################################
-FROM python-base as builder-base
+FROM python:3.12.8-slim-bookworm AS python-base
 
 RUN apt-get update && \
     apt-get install -y \
@@ -36,28 +12,35 @@ RUN apt-get update && \
     git \
     nano \
     curl
-    
-RUN --mount=type=cache,target=/root/.cache \
-    curl -sSL https://install.python-poetry.org | python - 
-    
-WORKDIR /opt
-COPY poetry.lock pyproject.toml ./
+ENV VENV_PATH="/app/.venv"
+################################
+# DEPENDENCIES
+################################
+FROM python-base AS dependencies
+WORKDIR /app
 
-RUN --mount=type=cache,target=/root/.cache \
-    poetry install --no-root --only main
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+ENV PATH="/root/.local/bin/:$PATH" \
+    UV_LINK_MODE=copy \
+    UV_COMPILE_BYTECODE=1
 
+# Install the project's dependencies using the lockfile and settings
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
+    
 ################################
 # PRODUCTION
 ################################
-FROM python-base as production
+FROM python-base AS production
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y --no-install-recommends \
-    ca-certificates && \
-    apt-get clean
-    
-COPY --from=builder-base $POETRY_HOME $POETRY_HOME
-COPY --from=builder-base $VIRTUAL_ENV $VIRTUAL_ENV
+WORKDIR /app
 
-WORKDIR /opt
-COPY ./ opt/
+# Enable bytecode compilation
+# Copy from the cache instead of linking since it's a mounted volume
+ENV PATH="$VENV_PATH/bin:$PATH"
+
+COPY . .
+COPY --from=dependencies --chown=app:app $VENV_PATH $VENV_PATH

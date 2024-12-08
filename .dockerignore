@@ -7,3 +7,5 @@ certs
 .gitignore
 postgres_data
 docker-compose.yaml
+Dockerfile
+README.md
