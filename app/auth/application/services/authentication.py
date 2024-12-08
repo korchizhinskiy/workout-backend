@@ -24,7 +24,6 @@ class JWTService:
             key=self.settings.certs.private_key,
             algorithm=self.settings.certs.algorithm,
         )
-        async with self.session as session:
-            session.add(AuthSession(jwt=sid))
-            await session.commit()
+        self.session.add(AuthSession(jwt=sid))
+        await self.session.commit()
         return sid
