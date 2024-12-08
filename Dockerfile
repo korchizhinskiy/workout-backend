@@ -12,12 +12,12 @@ RUN apt-get update && \
     git \
     nano \
     curl
-ENV VENV_PATH="/app/.venv"
+ENV VENV_PATH="/opt/.venv"
 ################################
 # DEPENDENCIES
 ################################
 FROM python-base AS dependencies
-WORKDIR /app
+WORKDIR /opt
 
 ADD https://astral.sh/uv/install.sh /uv-installer.sh
 RUN sh /uv-installer.sh && rm /uv-installer.sh
@@ -36,11 +36,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ################################
 FROM python-base AS production
 
-WORKDIR /app
+WORKDIR /opt
 
 # Enable bytecode compilation
 # Copy from the cache instead of linking since it's a mounted volume
 ENV PATH="$VENV_PATH/bin:$PATH"
 
 COPY . .
-COPY --from=dependencies --chown=app:app $VENV_PATH $VENV_PATH
+COPY --from=dependencies --chown=opt:opt $VENV_PATH $VENV_PATH

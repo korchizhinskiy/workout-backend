@@ -9,6 +9,7 @@ services:
       - ./app:/opt/app
       - ./script:/opt/script
       - ./alembic.ini:/opt/alembic.ini
+      - ./certs:/opt/certs
     user: 1000:1000
     ports:
       - 8000:8000
