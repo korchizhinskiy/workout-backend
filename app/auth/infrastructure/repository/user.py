@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.sql import select
 from sqlalchemy.sql.expression import exists
 
-from app.auth.application.dto.login import UserLoginDTO
 from app.auth.application.dto.registration import UserRegistrationDTO
 from app.auth.application.dto.user import UserDTO
 from app.auth.application.exceptions.user import UserNotFoundError
@@ -19,12 +18,12 @@ class UserRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def get_one(self, user_dto: UserLoginDTO) -> UserDTO:
-        user_query = select(User).where(User.username == user_dto.username)
+    async def get_user(self, username: UserUsername) -> UserDTO:
+        user_query = select(User).where(User.username == username)
         user = await self.session.scalar(user_query)
 
         if not user:
-            raise UserNotFoundError(username=user_dto.username)
+            raise UserNotFoundError(username=username)
         return UserDTO.model_validate(user)
 
     async def create(self, user_dto: UserRegistrationDTO) -> None:
