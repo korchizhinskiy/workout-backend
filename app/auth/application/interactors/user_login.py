@@ -17,6 +17,7 @@ class UserLoginInteractor:
         self.auth_service = auth_service
 
     async def execute(self, user_dto: UserLoginDTO) -> TokenDTO:
+
         user = await self.repository.get_user(user_dto.username)
 
         if not bcrypt.checkpw(user_dto.password, user.password):
