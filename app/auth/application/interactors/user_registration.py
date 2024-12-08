@@ -15,6 +15,8 @@ class UserRegistrationInteractor:
             UserRegistrationDTO(**user_dto.model_dump(exclude={"password"}), password=hashed_password),
         )
 
+    # TODO: Set function in another module (may be using on registration, on login and change password)
+    # https://github.com/korchizhinskiy/workout-backend/issues/12
     @staticmethod
     def hash_password(password: bytes) -> bytes:
         salt = bcrypt.gensalt()
