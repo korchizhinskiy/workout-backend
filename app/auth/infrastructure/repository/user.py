@@ -5,6 +5,7 @@ from sqlalchemy.sql import select
 
 from app.auth.application.dto.registration import UserRegistrationDTO
 from app.auth.application.dto.user import UserDTO
+from app.auth.application.interfaces.repository.user import IUserRepository
 from app.auth.infrastructure.models.user import User
 
 type HashPassword = bytes
@@ -12,7 +13,7 @@ type UserId = UUID
 type UserUsername = str
 
 
-class UserRepository:
+class UserRepository(IUserRepository):
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
