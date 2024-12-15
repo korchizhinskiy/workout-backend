@@ -24,6 +24,6 @@ class JWTService:
             key=self.settings.certs.private_key,
             algorithm=self.settings.certs.algorithm,
         )
-        self.session.add(AuthSession(jwt=sid))
+        self.session.add(AuthSession(token=sid, user_id=user_dto.id))
         await self.session.commit()
         return sid
