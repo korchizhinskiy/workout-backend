@@ -36,7 +36,7 @@ target-version = "py312"
 include = [
     "app/**/*.py",
     "app/**/*.pyi",
-    "tests/**/*.py",
+    "**/tests/**/*.py",
     "docs/**/*.py",
     "pyproject.toml",
 ]
@@ -141,7 +141,7 @@ extend-select = [
 ]
   
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = [
+"**/tests/**" = [
     "D100",     # Missing docstring in public module
     "D101",     # Missing docstring in public class
     "D102",     # Missing docstring in public method
@@ -161,6 +161,9 @@ function-names = ["_", "gettext", "ngettext", "ugettetxt"]
 
 [tool.ruff.lint.flake8-pytest-style]
 mark-parentheses = true
+parametrize-names-type = "tuple"
+parametrize-values-row-type = "tuple"
+parametrize-values-type = "tuple"
 
 [tool.ruff.format]
 preview = true
@@ -225,3 +228,9 @@ reportIncompatibleMethodOverride = "none"
 
 pythonVersion = "3.12"
 pythonPlatform = "Linux"
+
+[tool.pytest.ini_options]
+python_files = ["*_test.py", "*_tests.py", "test_*.py"]
+python_functions = ["*_test", "test_*"]
+testpaths = "app/tests"
+addopts = "-rA -vvv"
