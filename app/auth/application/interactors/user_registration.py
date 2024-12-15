@@ -1,6 +1,7 @@
 import bcrypt
 
 from app.auth.application.dto.registration import UserRegistrationDTO
+from app.auth.application.exceptions.user import UserAlreadyRegisteredError
 from app.auth.application.interfaces.repository.user import IUserRepository
 
 
@@ -9,6 +10,11 @@ class UserRegistrationInteractor:
         self.repository = repository
 
     async def execute(self, user_dto: UserRegistrationDTO) -> None:
+        registered_user = await self.repository.get_user(user_dto.username)
+
+        if registered_user:
+            raise UserAlreadyRegisteredError(username=user_dto.username)
+
         hashed_password = self.hash_password(user_dto.password)
 
         await self.repository.create(
