@@ -8,7 +8,7 @@ from fastapi.responses import ORJSONResponse
 
 from app.auth.application.exceptions.base import ApplicationError
 from app.auth.application.exceptions.user import UserAlreadyRegisteredError, UserNotFoundError, WrongPasswordError
-from app.auth.infrastructure.exceptions import InvalidAuthenticationTokenError, SessionIsExpiredError
+from app.auth.infrastructure.exceptions import InvalidAuthenticationTokenError
 
 
 @dataclass(frozen=True)
@@ -25,8 +25,7 @@ def setup_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(UserNotFoundError, error_handler(status.HTTP_404_NOT_FOUND))
     app.add_exception_handler(UserAlreadyRegisteredError, error_handler(status.HTTP_400_BAD_REQUEST))
     app.add_exception_handler(WrongPasswordError, error_handler(status.HTTP_400_BAD_REQUEST))
-    app.add_exception_handler(InvalidAuthenticationTokenError, error_handler(status.HTTP_400_BAD_REQUEST))
-    app.add_exception_handler(SessionIsExpiredError, error_handler(status.HTTP_401_UNAUTHORIZED))
+    app.add_exception_handler(InvalidAuthenticationTokenError, error_handler(status.HTTP_401_UNAUTHORIZED))
 
     app.add_exception_handler(ApplicationError, error_handler(status.HTTP_500_INTERNAL_SERVER_ERROR))
     app.add_exception_handler(Exception, unknown_exception_handler)
