@@ -7,8 +7,8 @@ from fastapi.routing import APIRouter
 from app.auth.application.dto.login import UserLoginDTO
 from app.auth.application.dto.registration import UserRegistrationDTO
 from app.auth.application.dto.user_token import TokenDTO
-from app.auth.application.interactors.user_login import UserLoginInteractor
-from app.auth.application.interactors.user_registration import UserRegistrationInteractor
+from app.auth.application.interfaces.usecase.user_login import UserLoginUseCase
+from app.auth.application.interfaces.usecase.user_registration import UserRegistrationUseCase
 from app.auth.infrastructure.dependencies import authenticate
 from app.auth.presentation.schemas.login import UserLoginInputSchema
 from app.auth.presentation.schemas.registration import UserRegistrationInputSchema
@@ -20,7 +20,7 @@ router = APIRouter(prefix="/auth")
 @inject
 async def registration(
     user_data: UserRegistrationInputSchema,
-    interactor: FromDishka[UserRegistrationInteractor],
+    interactor: FromDishka[UserRegistrationUseCase],
 ) -> UserRegistrationInputSchema:
     await interactor.execute(
         UserRegistrationDTO(
@@ -38,7 +38,7 @@ async def registration(
 @inject
 async def login(
     user_data: UserLoginInputSchema,
-    interactor: FromDishka[UserLoginInteractor],
+    interactor: FromDishka[UserLoginUseCase],
 ) -> TokenDTO:
     user_token = await interactor.execute(
         UserLoginDTO(username=user_data.username, password=user_data.password),

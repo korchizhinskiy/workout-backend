@@ -4,18 +4,18 @@ from dishka.provider import Provider
 
 from app.auth.application.interactors.user_login import UserLoginInteractor
 from app.auth.application.interactors.user_registration import UserRegistrationInteractor
-
-# TODO: Set providers by modules
+from app.auth.application.interfaces.usecase.user_login import UserLoginUseCase
+from app.auth.application.interfaces.usecase.user_registration import UserRegistrationUseCase
 
 
 class InteractorProvider(Provider):
     user_registration_interactor = provide(
-        UserRegistrationInteractor,
-        provides=UserRegistrationInteractor,
+        UserLoginInteractor,
+        provides=UserLoginUseCase,
         scope=Scope.REQUEST,
     )
     user_login_interactor = provide(
-        UserLoginInteractor,
-        provides=UserLoginInteractor,
+        UserRegistrationInteractor,
+        provides=UserRegistrationUseCase,
         scope=Scope.REQUEST,
     )
