@@ -9,7 +9,7 @@ from app.auth.application.interfaces.usecase.user_registration import UserRegist
 from app.auth.presentation.schemas.login import UserLoginInputSchema
 from app.auth.presentation.schemas.registration import UserRegistrationInputSchema
 
-router = APIRouter(prefix="/auth")
+router = APIRouter(tags=["Auth"], prefix="/auth")
 
 
 @router.post("/registration")
