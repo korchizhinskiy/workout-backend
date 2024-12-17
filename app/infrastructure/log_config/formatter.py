@@ -12,6 +12,7 @@ COLORED_LEVELS = {
     logging.CRITICAL: "\033[91mCRITICAL\033[0m",
 }
 
+
 class ColourizedFormatter(logging.Formatter):
     def __init__(
         self,
@@ -56,18 +57,6 @@ class UvicornAccessColourizedFormatter(ColourizedFormatter):
                 symbols=17,
             )
         return super().formatMessage(record)
-
-    def get_status_code(self, status_code: int) -> str:
-        try:
-            status_phrase = http.HTTPStatus(status_code).phrase
-        except ValueError:
-            status_phrase = ""
-        status_and_phrase = f"{status_code} {status_phrase}"
-        # if self.use_colors:
-        #     func = self.status_code_colours.get(status_code // 100, status_and_phrase)
-        #     return func(status_and_phrase)
-        return status_and_phrase
-
 
 def expand_log_field(field: str, symbols: int) -> str:
     return field + (" " * (symbols - len(field)))
