@@ -1,4 +1,3 @@
-import http
 import logging
 import logging.config
 import sys
@@ -57,6 +56,7 @@ class UvicornAccessColourizedFormatter(ColourizedFormatter):
                 symbols=17,
             )
         return super().formatMessage(record)
+
 
 def expand_log_field(field: str, symbols: int) -> str:
     return field + (" " * (symbols - len(field)))
