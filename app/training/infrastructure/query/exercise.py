@@ -14,7 +14,13 @@ type ExerciseId = UUID
 
 
 class ExerciseListQuery(IExerciseListQuery):
-    def execute(self, idp: UserDTO) -> list[ExerciseDTO]: ...
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def execute(self, idp: UserDTO) -> list[ExerciseDTO]:  # noqa: ARG002
+        query = select(Exercise).options(selectinload(Exercise.exercise_groups))
+        exercises = await self.session.scalars(query)
+        return [ExerciseDTO.model_validate(exercise) for exercise in exercises]
 
 
 class ExerciseQuery(IExerciseQuery):

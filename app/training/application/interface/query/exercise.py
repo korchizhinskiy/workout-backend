@@ -8,7 +8,7 @@ type ExerciseId = UUID
 
 
 class IExerciseListQuery(Protocol):
-    def execute(self, idp: UserDTO) -> list[ExerciseDTO]: ...
+    async def execute(self, idp: UserDTO) -> list[ExerciseDTO]: ...
 
 
 class IExerciseQuery(Protocol):
