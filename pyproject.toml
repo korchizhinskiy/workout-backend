@@ -170,7 +170,11 @@ preview = true
 venv = ".venv"
 venvPath = "."
 include = [
-    "app",
+    "app/auth",
+    "app/infrastructure",
+    "app/training",
+    "app/tests",
+    "app/training",
 ]
 exclude = [
     "**/migrations",
