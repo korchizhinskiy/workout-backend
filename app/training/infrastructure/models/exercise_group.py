@@ -22,6 +22,7 @@ class ExerciseGroup(Base):
     exercises: Mapped[list["Exercise"]] = relationship(
         secondary="exercise_exercise_group_association",
         back_populates="exercise_groups",
+        viewonly=True,
     )
     exercise_associations: Mapped[list["ExerciseExerciseGroupAssociation"]] = relationship(
         back_populates="exercise_group",
