@@ -9,7 +9,7 @@ from app.user.presentation.api.routers.user_profile import router as user_router
 
 # TODO: Set main router by package layer (in init module)
 
-app = FastAPI()
+app = FastAPI(swagger_ui_parameters={"persistAuthorization": True})
 
 app.include_router(auth_router)
 app.include_router(user_router)
