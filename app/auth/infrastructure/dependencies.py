@@ -15,7 +15,7 @@ from app.auth.infrastructure.models.session import AuthSession
 
 auth_scheme = HTTPBearer()
 
-
+# TODO: Check for returning this DTO in Depends functions.
 class AuthUserDTO(BaseModel):
     id: UUID
     username: str
