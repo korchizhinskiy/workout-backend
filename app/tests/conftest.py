@@ -31,8 +31,10 @@ from app.tests.ioc.providers import (
 from app.training.presentation.api.routers import router as training_router
 from app.user.presentation.api.routers.user_profile import router as user_router
 
+pytest_plugins = ("app.tests.training.plugins.exercise",)
 
-@pytest_asyncio.fixture(scope="session")
+
+@pytest.fixture
 async def container() -> AsyncGenerator[AsyncContainer]:
     container = make_async_container(
         ApplicationConfigProvider(),
@@ -50,7 +52,7 @@ async def container() -> AsyncGenerator[AsyncContainer]:
     await container.close()
 
 
-@pytest_asyncio.fixture(autouse=True, scope="session", loop_scope="session")
+@pytest.fixture(autouse=True, scope="session")
 async def setup_database(engine: AsyncEngine) -> AsyncGenerator[None]:
     config = Config("alembic.ini")
     async with engine.connect() as connection:
@@ -83,7 +85,7 @@ async def transaction(
         yield transaction
 
 
-@pytest_asyncio.fixture()
+@pytest.fixture
 async def session(
     connection: AsyncConnection,
     transaction: AsyncTransaction,
