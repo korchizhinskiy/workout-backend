@@ -24,6 +24,7 @@ services:
     image: postgres:16.4-bookworm
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+      - ./script/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
     environment:
