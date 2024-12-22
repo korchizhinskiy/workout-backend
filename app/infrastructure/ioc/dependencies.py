@@ -9,9 +9,11 @@ from app.infrastructure.ioc.providers import (
     AuthRepositoryProvider,
     AuthServiceProvider,
     SQLAlchemyProvider,
+    TrainingInteractorProvider,
+    TrainingQueryProvider,
+    TrainingRepositoryProvider,
+    UserQueryProvider,
 )
-from app.infrastructure.ioc.providers.training.query import QueryProvider as TrainingQueryProvider
-from app.infrastructure.ioc.providers.user.query import QueryProvider as UserQueryProvider
 
 
 def init_di(app: FastAPI) -> None:
@@ -25,6 +27,8 @@ def init_di(app: FastAPI) -> None:
         AuthServiceProvider(),
         UserQueryProvider(),
         TrainingQueryProvider(),
+        TrainingRepositoryProvider(),
+        TrainingInteractorProvider(),
         context={Settings: Settings()},  # type: ignore [reportCallIssue]
     )
     setup_dishka(container, app)
