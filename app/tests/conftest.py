@@ -34,24 +34,6 @@ from app.user.presentation.api.routers.user_profile import router as user_router
 pytest_plugins = ("app.tests.training.plugins.exercise",)
 
 
-@pytest.fixture
-async def container() -> AsyncGenerator[AsyncContainer]:
-    container = make_async_container(
-        ApplicationConfigProvider(),
-        SQLAlchemyProvider(),
-        AuthRepositoryProvider(),
-        AuthInteractorProvider(),
-        AuthServiceProvider(),
-        UserQueryProvider(),
-        TrainingQueryProvider(),
-        TrainingRepositoryProvider(),
-        TrainingInteractorProvider(),
-        context={Settings: MockSettings()},  # type: ignore [reportCallIssue]
-    )
-    yield container
-    await container.close()
-
-
 @pytest.fixture(autouse=True, scope="session")
 async def setup_database(engine: AsyncEngine) -> AsyncGenerator[None]:
     config = Config("alembic.ini")
