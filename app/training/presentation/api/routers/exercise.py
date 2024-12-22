@@ -7,11 +7,12 @@ from fastapi.routing import APIRouter
 
 from app.auth.application.dto.user import UserDTO
 from app.auth.infrastructure.dependencies import get_authenticated_user
-from app.training.application.dto.exercise import ExerciseDTO
+from app.training.application.dto.exercise import ExerciseCreationDTO, ExerciseDTO
 from app.training.application.interface.query.exercise import IExerciseListQuery, IExerciseQuery
+from app.training.application.interface.use_case.exercise import ExerciseCreationUseCase
 from app.training.presentation.schemas.exercise import ExerciseOutputSchema
 
-router = APIRouter(tags=["Exercise"], prefix="/training")
+router = APIRouter()
 
 
 @router.get("/exercises", response_model=list[ExerciseOutputSchema])
@@ -31,3 +32,13 @@ async def get_exercise_by_id(
     query: FromDishka[IExerciseQuery],
 ) -> ExerciseDTO:
     return await query.execute(exercise_id, idp)
+
+
+@router.post("/exercises")
+@inject
+async def create_exercise(
+    exercise_dto: ExerciseCreationDTO,
+    interactor: FromDishka[ExerciseCreationUseCase],
+    idp: Annotated[UserDTO, Depends(get_authenticated_user)],
+) -> ExerciseDTO:
+    return await interactor.execute(exercise_dto, idp)
