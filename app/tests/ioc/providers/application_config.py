@@ -5,6 +5,5 @@ from dishka.provider import Provider
 from app.infrastructure.ioc.dependencies import Settings
 
 
-
 class ApplicationConfigProvider(Provider):
     config = from_context(provides=Settings, scope=Scope.APP)
