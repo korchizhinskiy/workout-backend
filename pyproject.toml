@@ -20,6 +20,8 @@ dependencies = [
     "bcrypt<5.0.0,>=4.2.0",
     "orjson<4.0.0,>=3.10.7",
     "redis[hiredis]<6.0.0,>=5.2.0",
+    "pytest-asyncio>=0.25.0",
+    "httpx>=0.28.1",
 ]
 
 [dependency-groups]
@@ -170,11 +172,7 @@ preview = true
 venv = ".venv"
 venvPath = "."
 include = [
-    "app/auth",
-    "app/infrastructure",
-    "app/training",
-    "app/tests",
-    "app/training",
+    "app",
 ]
 exclude = [
     "**/migrations",
@@ -236,3 +234,6 @@ python_files = ["*_test.py", "*_tests.py", "test_*.py"]
 python_functions = ["*_test", "test_*"]
 testpaths = "app/tests"
 addopts = "-rA -vvv"
+pythonpath = [ "." ]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
