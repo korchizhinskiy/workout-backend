@@ -1,3 +1,4 @@
+import os
 from logging.config import fileConfig
 
 from alembic import context
@@ -6,10 +7,12 @@ from sqlalchemy import engine_from_config, pool
 from app.auth.infrastructure.models.base import Base as AuthBase
 from app.infrastructure.config import Settings
 from app.infrastructure.database import get_connection_url
+from app.tests.ioc.dependencies import MockSettings
 from app.training.infrastructure.models.base import Base as TrainingBase
 
 config = context.config
-settings = Settings()  # type: ignore [reportCallIssue]
+# TODO: Temporary decision.
+settings = Settings() if os.environ.get("PYTEST_VERSION") is None else MockSettings() # type: ignore [reportCallIssue]
 config.set_main_option("sqlalchemy.url", f"{get_connection_url(settings)}?async_fallback=True")
 
 if config.config_file_name is not None:
