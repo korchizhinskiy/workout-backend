@@ -3,6 +3,11 @@ from typing import Literal
 import pytest
 import starlette.status as status_code
 from httpx import AsyncClient
+from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.sql.expression import insert
+
+from app.auth.application.services.security import hash_password
+from app.auth.infrastructure.models.user import User
 
 
 @pytest.mark.xfail(reason="Return password in response.")
@@ -28,7 +33,18 @@ async def test_registration_user(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio(loop_scope="session")
-async def test_repeatable_user_registration(client: AsyncClient) -> None:
+async def test_repeatable_user_registration(client: AsyncClient, session: AsyncSession) -> None:
+    # Arrange
+    stmt = insert(User).values(
+        username="petr2024",
+        password=hash_password(b"%PetrSun2024*"),
+        first_name="Petr",
+        last_name="Sun",
+        second_name="Alexandrovich",
+    )
+    await session.execute(stmt)
+
+    # Act
     response = await client.post(
         "auth/registration",
         json={
