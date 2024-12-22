@@ -5,6 +5,7 @@ from pydantic.fields import Field
 from pydantic.main import BaseModel
 
 
+# ===== Inside Application DTO ===== #
 class ExerciseDTO(BaseModel):
     id: UUID
     name: str
@@ -20,3 +21,13 @@ class ExerciseGroupIncludeDTO(BaseModel):
     description: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# ===== Creation DTO ===== #
+type ExerciseGroupId = UUID
+
+
+class ExerciseCreationDTO(BaseModel):
+    name: str
+    description: str
+    exercise_groups: list[ExerciseGroupId] = Field(..., min_length=1, alias="groups")
