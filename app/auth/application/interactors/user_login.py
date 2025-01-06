@@ -1,4 +1,5 @@
 from logging import getLogger
+from typing import final
 
 import bcrypt
 
@@ -11,6 +12,7 @@ from app.auth.application.services.authentication import JWTService
 log = getLogger(__name__)
 
 
+@final
 class UserLoginInteractor:
     def __init__(self, repository: IUserRepository, auth_service: JWTService) -> None:
         self.repository = repository

@@ -12,7 +12,7 @@ class ExerciseDTO(BaseModel):
     description: str
     groups: list["ExerciseGroupIncludeDTO"] = Field(..., alias="exercise_groups")
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config: ConfigDict = ConfigDict(from_attributes=True)
 
 
 class ExerciseGroupIncludeDTO(BaseModel):
@@ -20,7 +20,7 @@ class ExerciseGroupIncludeDTO(BaseModel):
     name: str
     description: str
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config: ConfigDict = ConfigDict(from_attributes=True)
 
 
 # ===== Creation DTO ===== #

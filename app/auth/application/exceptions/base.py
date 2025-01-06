@@ -1,2 +1,2 @@
 class ApplicationError(Exception):
-    message = "Unknown error occurred"
+    message: str = "Unknown error occurred"

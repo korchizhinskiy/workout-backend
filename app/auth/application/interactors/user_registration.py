@@ -1,9 +1,12 @@
+from typing import final
+
 from app.auth.application.dto.registration import UserRegistrationDTO
 from app.auth.application.exceptions.user import UserAlreadyRegisteredError
 from app.auth.application.interfaces.repository.user import IUserRepository
 from app.auth.application.services.security import hash_password
 
 
+@final
 class UserRegistrationInteractor:
     def __init__(self, repository: IUserRepository) -> None:
         self.repository = repository
@@ -17,5 +20,11 @@ class UserRegistrationInteractor:
         hashed_password = hash_password(user_dto.password)
 
         await self.repository.create(
-            UserRegistrationDTO(**user_dto.model_dump(exclude={"password"}), password=hashed_password),
+            UserRegistrationDTO(
+                username=user_dto.username,
+                first_name=user_dto.first_name,
+                last_name=user_dto.last_name,
+                second_name=user_dto.second_name,
+                password=hashed_password,
+            ),
         )
